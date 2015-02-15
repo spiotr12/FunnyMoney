@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Piotrek
  */
-public class Currency implements UtilitiesInterface {
+public class Currency implements UtilitiesInterface<Currency> {
 
 	private int id, position;
 	private String name, symbol;
@@ -98,7 +98,7 @@ public class Currency implements UtilitiesInterface {
 	}
 
 	@Override
-	public void updateToDatabase(Object object) {
+	public void updateToDatabase(Currency currency) {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
@@ -109,19 +109,46 @@ public class Currency implements UtilitiesInterface {
 
 	//---------------- STATIC METHODS -------------------------------------------------------------------------------------
 	/**
-	 * Returns object found by given name.
+	 * Returns object found by given ID.
 	 *
-	 * @param valueName
+	 * @param id Object ID.
 	 * @return Object from database.
 	 */
-	public static Currency getCurrencyByName(String valueName) {
+	public static Currency getCurrencyFromDatabaseById(int id) {
 		Currency currency = null;
 		try {
 			// gets object's details from database
 			Statement stmt = con.createStatement();
 			String sql = "SELECT * \n"
 					+ "FROM Currency \n"
-					+ "WHERE currency_name = '" + valueName.toUpperCase() + "'";
+					+ "WHERE currency_id = " + id;
+			ResultSet rs = stmt.executeQuery(sql);
+			// create object to return
+			while (rs.next()) {
+				currency = new Currency(rs.getInt("currency_id"), rs.getString("currency_name"), rs.getString("symbol"), rs.getInt("position"));
+			}
+			stmt.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(Currency.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println(ex.getMessage());
+		}
+		return currency;
+	}
+
+	/**
+	 * Returns object found by given name.
+	 *
+	 * @param name
+	 * @return Object from database.
+	 */
+	public static Currency getCurrencyFromDatabaseByName(String name) {
+		Currency currency = null;
+		try {
+			// gets object's details from database
+			Statement stmt = con.createStatement();
+			String sql = "SELECT * \n"
+					+ "FROM Currency \n"
+					+ "WHERE currency_name = '" + name.toUpperCase() + "'";
 			ResultSet rs = stmt.executeQuery(sql);
 			// create object to return
 			while (rs.next()) {
@@ -152,4 +179,5 @@ public class Currency implements UtilitiesInterface {
 		return str;
 	}
 
+	//TODO: Add comparator/comparable interface
 }

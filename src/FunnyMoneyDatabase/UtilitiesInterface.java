@@ -9,7 +9,7 @@ package FunnyMoneyDatabase;
  *
  * @author Piotrek
  */
-public interface UtilitiesInterface {
+public interface UtilitiesInterface<T> {
 
 	/**
 	 * Adds object to database. Adds generated ID value to object
@@ -18,11 +18,12 @@ public interface UtilitiesInterface {
 	public void addToDatabase();
 
 	/**
-	 * Updates certain object with new information to database.
+	 * Updates certain object with new information to database. Checks which object fields are different (except id) and construct an update query. Updates both object and
+	 * database. Method updates different tables, rows and object depends on the class.
 	 *
 	 * @param object
 	 */
-	public void updateToDatabase(Object object);
+	public void updateToDatabase(T e);
 
 	/**
 	 * Removes object from database;

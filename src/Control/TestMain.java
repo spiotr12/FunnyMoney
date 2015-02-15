@@ -7,6 +7,7 @@ package Control;
 
 import FunnyMoneyDatabase.FunnyDB;
 import FunnyMoneyDatabase.DefaultTables;
+import FunnyMoneyDatabase.StaticUtilities;
 import Model.Account;
 import Model.Currency;
 
@@ -37,8 +38,18 @@ public class TestMain {
 //		pln.addToDatabase();
 //		System.out.println(pln.toString());
 		
-		Currency pln = Currency.getCurrencyByName("met");
+		Currency pln = Currency.getCurrencyFromDatabaseByName("met");
 		System.out.println(pln.toString());
+		
+		Account bank = Account.getAccountFromDatabaseById(1);
+		System.out.println(bank.toString());
+		bank.updateToDatabase(new Account("Your bank", Account.CASH, pln, 0.30));
+		System.out.println(bank.toString());
+		
+		String str = "asdadasd,asdasdas, df";		
+		System.out.println(StaticUtilities.removeLastComa(str));
+		System.out.println("---------------");
+		
 
 	}
 
