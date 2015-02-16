@@ -81,7 +81,7 @@ public class Currency implements UtilitiesInterface<Currency> {
 		try {
 			Statement stmt = con.createStatement();
 			String sql = "INSERT INTO Currency (currency_name, symbol, position)\n"
-					+ "VALUES ('" + this.name + "', '" + this.symbol + "', " + this.position + ")";
+					+ "VALUES ('" + this.name.toUpperCase() + "', '" + this.symbol + "', " + this.position + ")";
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 			// get index of this operation
 			ResultSet rs = stmt.getGeneratedKeys();

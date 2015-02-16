@@ -5,6 +5,7 @@
  */
 package Model;
 
+import FunnyMoneyDatabase.FunnyDB;
 import FunnyMoneyDatabase.UtilitiesInterface;
 import static FunnyMoneyDatabase.FunnyDB.con;
 import static FunnyMoneyDatabase.StaticUtilities.removeLastComa;
@@ -154,7 +155,7 @@ public class Account implements UtilitiesInterface<Account> {
 			if (this.startAmount != account.getStartAmount()) {
 				sql += "start_amount = " + account.getStartAmount() + ", ";
 				this.startAmount = account.getStartAmount();
-				this.balance = countBalance();
+				this.balance = this.countBalance();
 				change = true;
 			}
 
@@ -191,17 +192,12 @@ public class Account implements UtilitiesInterface<Account> {
 	public static Account getAccountFromDatabaseById(int id) {
 		Account account = null;
 		try {
-			// gets object's details from database
-			Statement stmt = con.createStatement();
-			String sql = "SELECT * \n"
-					+ "FROM Account \n"
-					+ "WHERE account_id = " + id;
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs = FunnyDB.getObjectResultSetById("Account", id);
 			// create object to return
 			while (rs.next()) {
 				account = new Account(rs.getInt("account_id"), rs.getString("account_name"), rs.getString("account_type"), Currency.getCurrencyFromDatabaseById(rs.getInt("currency_id")), rs.getDouble("start_amount"), rs.getDouble("balance"));
 			}
-			stmt.close();
+			rs.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Currency.class.getName()).log(Level.SEVERE, null, ex);
 			System.out.println(ex.getMessage());
@@ -218,17 +214,12 @@ public class Account implements UtilitiesInterface<Account> {
 	public static Account getAccountFromDatabaseByName(String name) {
 		Account account = null;
 		try {
-			// gets object's details from database
-			Statement stmt = con.createStatement();
-			String sql = "SELECT * \n"
-					+ "FROM Account \n"
-					+ "WHERE account_name = '" + name.toUpperCase() + "'";
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs = FunnyDB.getObjectResultSetByName("Account", name);
 			// create object to return
 			while (rs.next()) {
 				account = new Account(rs.getInt("account_id"), rs.getString("account_name"), rs.getString("account_type"), Currency.getCurrencyFromDatabaseById(rs.getInt("currency_id")), rs.getDouble("start_amount"), rs.getDouble("balance"));
 			}
-			stmt.close();
+			rs.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Currency.class.getName()).log(Level.SEVERE, null, ex);
 			System.out.println(ex.getMessage());

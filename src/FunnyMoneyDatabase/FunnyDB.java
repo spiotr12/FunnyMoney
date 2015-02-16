@@ -74,7 +74,7 @@ public class FunnyDB {
 			System.out.println(ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Checks if the table already exists, or table does not exists..
 	 *
@@ -144,5 +144,52 @@ public class FunnyDB {
 			System.out.println("Table " + tableName + " does not exists");
 			return -1;
 		}
+	}
+
+	/**
+	 * Returns ResultSet from querry to get data to create object. Identufy data by id
+	 *
+	 * @param tableName Name of he table to search. Use getClass().getSimpleName().
+	 * @param id
+	 * @return
+	 */
+	public static ResultSet getObjectResultSetById(String tableName, int id) {
+		ResultSet rs = null;
+		try {
+			// gets object's details from database
+			Statement stmt = con.createStatement();
+			String sql = "SELECT * \n"
+					+ "FROM " + tableName + " \n"
+					+ "WHERE " + tableName.toLowerCase() + "_id = " + id;
+			rs = stmt.executeQuery(sql);
+		} catch (SQLException ex) {
+			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println(ex.getMessage());
+		}
+		return rs;
+	}
+
+	/**
+	 * Returns ResultSet from querry to get data to create object. Identufy data by name
+	 *
+	 * @param tableName Name of he table to search. Use getClass().getSimpleName().
+	 * @param name
+	 * @return
+	 */
+	public static ResultSet getObjectResultSetByName(String tableName, String name) {
+		ResultSet rs = null;
+		try {
+			// gets object's details from database
+			Statement stmt = con.createStatement();
+			String sql = "SELECT * \n"
+					+ "FROM " + tableName + " \n"
+					+ "WHERE " + tableName.toLowerCase() + "_name = '" + name + "'";
+			rs = stmt.executeQuery(sql);
+			//TODO: Closing rs and stmt? .close()
+		} catch (SQLException ex) {
+			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println(ex.getMessage());
+		}
+		return rs;
 	}
 }

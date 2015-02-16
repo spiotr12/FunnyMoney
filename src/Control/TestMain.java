@@ -41,9 +41,9 @@ public class TestMain {
 		Currency pln = Currency.getCurrencyFromDatabaseByName("met");
 		System.out.println(pln.toString());
 		
-		Account bank = Account.getAccountFromDatabaseById(1);
+		Account bank = Account.getAccountFromDatabaseByName("My bank");
 		System.out.println(bank.toString());
-		bank.updateToDatabase(new Account("Your bank", Account.CASH, pln, 0.30));
+		bank.updateToDatabase(new Account("You bank", Account.CASH, pln, 0.30));
 		System.out.println(bank.toString());
 		
 		String str = "asdadasd,asdasdas, df";		
