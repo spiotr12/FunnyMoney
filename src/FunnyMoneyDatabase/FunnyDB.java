@@ -9,9 +9,12 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,6 +72,7 @@ public class FunnyDB {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql);
+			stmt.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
 			System.out.println(ex.getMessage());
@@ -107,8 +111,8 @@ public class FunnyDB {
 	}
 
 	/**
-	 * Checks if the value already exists, or table does not exists. in given table. If yes, returns 1; if no, returns 0. If table does not exist, returns -1. This method is created to ensures that
-	 * table auto increment does not
+	 * Checks if the value already exists, or table does not exists. in given table. If yes, returns 1; if no, returns 0. If table does not exist, returns -1. This method is
+	 * created to ensures that table auto increment does not
 	 *
 	 * @param tableName Name of the table to search through.
 	 * @param objectName Name of the object to find.
@@ -129,6 +133,7 @@ public class FunnyDB {
 						exists = true;
 					}
 				}
+				stmt.close();
 				rs.close();
 			} catch (SQLException ex) {
 				Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,50 +151,121 @@ public class FunnyDB {
 		}
 	}
 
+//	/**
+//	 * Returns ResultSet from query to get data to create object. Identufy data by id
+//	 *
+//	 * @param tableName Name of he table to search. Use getClass().getSimpleName().
+//	 * @param id
+//	 * @return
+//	 */
+//	public static ResultSet getObjectResultSetById(String tableName, int id) {
+//		ResultSet rs = null;
+//		try {
+//			// gets object's details from database
+//			Statement stmt = con.createStatement();
+//			String sql = "SELECT * \n"
+//					+ "FROM " + tableName + " \n"
+//					+ "WHERE " + tableName.toLowerCase() + "_id = " + id;
+//			rs = stmt.executeQuery(sql);
+//			//TODO: Closing rs and stmt? .close().
+//		} catch (SQLException ex) {
+//			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
+//			System.out.println(ex.getMessage());
+//		}
+//		return rs;
+//	}
+//	/**
+//	 * Returns ResultSet from query to get data to create object. Identify data by name
+//	 *
+//	 * @param tableName Name of he table to search. Use getClass().getSimpleName().
+//	 * @param name
+//	 * @return
+//	 */
+//	public static ResultSet getObjectResultSetByName(String tableName, String name) {
+//		ResultSet rs = null;
+//		try {
+//			// gets object's details from database
+//			Statement stmt = con.createStatement();
+//			String sql = "SELECT * \n"
+//					+ "FROM " + tableName + " \n"
+//					+ "WHERE " + tableName.toLowerCase() + "_name = '" + name + "'";
+//			rs = stmt.executeQuery(sql);
+//			//TODO: Closing rs and stmt? .close().
+//		} catch (SQLException ex) {
+//			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
+//			System.out.println(ex.getMessage());
+//		}
+//		return rs;
+//	}
 	/**
-	 * Returns ResultSet from querry to get data to create object. Identufy data by id
+	 * Returns HashMap from query to get data to create object. Identufy data by id
 	 *
 	 * @param tableName Name of he table to search. Use getClass().getSimpleName().
 	 * @param id
 	 * @return
 	 */
-	public static ResultSet getObjectResultSetById(String tableName, int id) {
-		ResultSet rs = null;
+	public static Map getObjectDataById(String tableName, int id) {
+		Map<String, Object> map = null;
 		try {
 			// gets object's details from database
 			Statement stmt = con.createStatement();
 			String sql = "SELECT * \n"
 					+ "FROM " + tableName + " \n"
 					+ "WHERE " + tableName.toLowerCase() + "_id = " + id;
-			rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
+			// create HashMap with object data
+			ResultSetMetaData md = rs.getMetaData();
+			int column = md.getColumnCount();
+			map = new HashMap(column);
+			// fill in HashMap
+			while (rs.next()) {
+				for (int i = 1; i <= column; ++i) {
+					map.put(md.getColumnName(i).toLowerCase(), rs.getObject(i));
+				}
+			}
+			// close resources
+			stmt.close();
+			rs.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
 			System.out.println(ex.getMessage());
 		}
-		return rs;
+		return map;
 	}
 
 	/**
-	 * Returns ResultSet from querry to get data to create object. Identufy data by name
+	 * Returns HashMap from query to get data to create object. Identify data by name
 	 *
 	 * @param tableName Name of he table to search. Use getClass().getSimpleName().
 	 * @param name
 	 * @return
 	 */
-	public static ResultSet getObjectResultSetByName(String tableName, String name) {
-		ResultSet rs = null;
+	public static Map getObjectDataByName(String tableName, String name) {
+		Map<String, Object> map = null;
 		try {
 			// gets object's details from database
 			Statement stmt = con.createStatement();
 			String sql = "SELECT * \n"
 					+ "FROM " + tableName + " \n"
 					+ "WHERE " + tableName.toLowerCase() + "_name = '" + name + "'";
-			rs = stmt.executeQuery(sql);
-			//TODO: Closing rs and stmt? .close()
+			ResultSet rs = stmt.executeQuery(sql);
+			// create HashMap with object data
+			ResultSetMetaData md = rs.getMetaData();
+			int column = md.getColumnCount();
+			map = new HashMap(column);
+			// fill in HashMap
+			while (rs.next()) {
+				for (int i = 1; i <= column; ++i) {
+					map.put(md.getColumnName(i).toLowerCase(), rs.getObject(i));
+				}
+			}
+			// close resources
+			stmt.close();
+			rs.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
 			System.out.println(ex.getMessage());
 		}
-		return rs;
+		return map;
 	}
 }

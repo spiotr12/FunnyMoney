@@ -5,11 +5,14 @@
  */
 package Model;
 
+import FunnyMoneyDatabase.FunnyDB;
 import FunnyMoneyDatabase.UtilitiesInterface;
 import static FunnyMoneyDatabase.FunnyDB.con;
+import static FunnyMoneyDatabase.StaticUtilities.removeLastComa;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,8 +101,47 @@ public class Currency implements UtilitiesInterface<Currency> {
 	}
 
 	@Override
-	public void updateToDatabase(Currency currency) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public void updateToDatabase(Currency newCurrency) {
+		//TEST: Update
+		boolean change = false;
+		try {
+			Statement stmt = con.createStatement();
+			String sql = "UPDATE Currency \n" + "SET ";
+			// set name
+			if (!this.name.equals(newCurrency.getName())) {
+				sql += "currency_name = '" + newCurrency.getName() + "', ";
+				this.name = newCurrency.getName();
+				change = true;
+			}
+			// set symbol
+			if (!this.symbol.equals(newCurrency.getSymbol())) {
+				sql += "symbol = '" + newCurrency.getSymbol()+ "', ";
+				this.symbol = newCurrency.getSymbol();
+				change = true;
+			}
+			// set position
+			if (this.position != newCurrency.getPosition()) {
+				sql += "position = " + newCurrency.getPosition() + ", ";
+				this.position = newCurrency.getPosition();
+				change = true;
+			}
+			
+			// finish and execute querry
+			if (change) {
+				sql = removeLastComa(sql);	// removes coma 
+				sql += " \n" + "WHERE currency_id = " + this.id;	// finish sql query
+				stmt.executeUpdate(sql);	// update row
+				//System.out.println(sql);
+			} else {
+				System.out.println("Objects are the same, no new changes");
+			}
+			// close connections
+			stmt.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		
 	}
 
 	@Override
@@ -111,54 +153,38 @@ public class Currency implements UtilitiesInterface<Currency> {
 	/**
 	 * Returns object found by given ID.
 	 *
-	 * @param id Object ID.
+	 * @param objectId Object ID.
 	 * @return Object from database.
 	 */
-	public static Currency getCurrencyFromDatabaseById(int id) {
-		Currency currency = null;
-		try {
-			// gets object's details from database
-			Statement stmt = con.createStatement();
-			String sql = "SELECT * \n"
-					+ "FROM Currency \n"
-					+ "WHERE currency_id = " + id;
-			ResultSet rs = stmt.executeQuery(sql);
-			// create object to return
-			while (rs.next()) {
-				currency = new Currency(rs.getInt("currency_id"), rs.getString("currency_name"), rs.getString("symbol"), rs.getInt("position"));
-			}
-			stmt.close();
-		} catch (SQLException ex) {
-			Logger.getLogger(Currency.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
-		}
+	public static Currency getCurrencyFromDatabaseById(int objectId) {
+		Map hm = FunnyDB.getObjectDataById("Currency", objectId);
+		// get values
+		int id = (Integer) hm.get("currency_id");
+		String name = (String) hm.get("currency_name");
+		String type = (String) hm.get("symbol");
+		int position = (Integer) hm.get("position");
+
+		// create object
+		Currency currency = new Currency(id, name, type, position);
 		return currency;
 	}
 
 	/**
 	 * Returns object found by given name.
 	 *
-	 * @param name
+	 * @param objectName
 	 * @return Object from database.
 	 */
-	public static Currency getCurrencyFromDatabaseByName(String name) {
-		Currency currency = null;
-		try {
-			// gets object's details from database
-			Statement stmt = con.createStatement();
-			String sql = "SELECT * \n"
-					+ "FROM Currency \n"
-					+ "WHERE currency_name = '" + name.toUpperCase() + "'";
-			ResultSet rs = stmt.executeQuery(sql);
-			// create object to return
-			while (rs.next()) {
-				currency = new Currency(rs.getInt("currency_id"), rs.getString("currency_name"), rs.getString("symbol"), rs.getInt("position"));
-			}
-			stmt.close();
-		} catch (SQLException ex) {
-			Logger.getLogger(Currency.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
-		}
+	public static Currency getCurrencyFromDatabaseByName(String objectName) {
+		Map hm = FunnyDB.getObjectDataByName("Currency", objectName.toUpperCase());
+		// get values
+		int id = (Integer) hm.get("currency_id");
+		String name = (String) hm.get("currency_name");
+		String type = (String) hm.get("symbol");
+		int position = (Integer) hm.get("position");
+
+		// create object
+		Currency currency = new Currency(id, name, type, position);
 		return currency;
 	}
 

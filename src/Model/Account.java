@@ -12,6 +12,8 @@ import static FunnyMoneyDatabase.StaticUtilities.removeLastComa;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -114,8 +116,8 @@ public class Account implements UtilitiesInterface<Account> {
 				id = rs.getInt(1);
 			}
 			// close connections
-			rs.close();
 			stmt.close();
+			rs.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
@@ -124,37 +126,36 @@ public class Account implements UtilitiesInterface<Account> {
 	}
 
 	@Override
-	public void updateToDatabase(Account account) {
-		//TEST: generating SQL string and this method.
+	public void updateToDatabase(Account newAccount) {
 		boolean change = false;
 		boolean changeName = false;
 		try {
 			Statement stmt = con.createStatement();
 			String sql = "UPDATE Account \n" + "SET ";
 			// set name
-			if (!this.name.equals(account.getName())) {
-				sql += "account_name = '" + account.getName() + "', ";
-				this.name = account.getName();
+			if (!this.name.equals(newAccount.getName())) {
+				sql += "account_name = '" + newAccount.getName() + "', ";
+				this.name = newAccount.getName();
 				change = true;
 				changeName = true;
 			}
 			// set type
-			if (!this.type.equals(account.getType())) {
-				sql += "account_type = '" + account.getType() + "', ";
-				this.type = account.getType();
+			if (!this.type.equals(newAccount.getType())) {
+				sql += "account_type = '" + newAccount.getType() + "', ";
+				this.type = newAccount.getType();
 				change = true;
 			}
 			// set currency
-			int currencyId = account.getCurrency().getId();
+			int currencyId = newAccount.getCurrency().getId();
 			if (this.currency.getId() != currencyId) {
 				sql += "currency_id = " + currencyId + ", ";
 				this.currency = Currency.getCurrencyFromDatabaseById(currencyId);
 				change = true;
 			}
 			// set startAmount and set balance
-			if (this.startAmount != account.getStartAmount()) {
-				sql += "start_amount = " + account.getStartAmount() + ", ";
-				this.startAmount = account.getStartAmount();
+			if (this.startAmount != newAccount.getStartAmount()) {
+				sql += "start_amount = " + newAccount.getStartAmount() + ", ";
+				this.startAmount = newAccount.getStartAmount();
 				this.balance = this.countBalance();
 				change = true;
 			}
@@ -165,6 +166,8 @@ public class Account implements UtilitiesInterface<Account> {
 				sql += " \n" + "WHERE account_id = " + this.id;	// finish sql query
 				stmt.executeUpdate(sql);	// update row
 				//System.out.println(sql);
+			} else {
+				System.out.println("Objects are the same, no new changes");
 			}
 			// close connections
 			stmt.close();
@@ -186,44 +189,40 @@ public class Account implements UtilitiesInterface<Account> {
 	/**
 	 * Returns object found by given ID.
 	 *
-	 * @param id Object ID.
+	 * @param objectId Object ID.
 	 * @return Object from database.
 	 */
-	public static Account getAccountFromDatabaseById(int id) {
-		Account account = null;
-		try {
-			ResultSet rs = FunnyDB.getObjectResultSetById("Account", id);
-			// create object to return
-			while (rs.next()) {
-				account = new Account(rs.getInt("account_id"), rs.getString("account_name"), rs.getString("account_type"), Currency.getCurrencyFromDatabaseById(rs.getInt("currency_id")), rs.getDouble("start_amount"), rs.getDouble("balance"));
-			}
-			rs.close();
-		} catch (SQLException ex) {
-			Logger.getLogger(Currency.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
-		}
+	public static Account getAccountFromDatabaseById(int objectId) {
+		Map hm = FunnyDB.getObjectDataById("Account", objectId);
+		// get values
+		int id = (Integer) hm.get("account_id");
+		String name = (String) hm.get("account_name");
+		String type = (String) hm.get("account_type");
+		Currency currency = Currency.getCurrencyFromDatabaseById((Integer) hm.get("currency_id"));
+		double startAmount = (Double) hm.get("start_amount");
+		double balance = (Double) hm.get("balance");
+		// create object
+		Account account = new Account(id, name, type, currency, startAmount, balance);
 		return account;
 	}
 
 	/**
 	 * Returns object found by given name.
 	 *
-	 * @param name
+	 * @param objectName
 	 * @return Object from database.
 	 */
-	public static Account getAccountFromDatabaseByName(String name) {
-		Account account = null;
-		try {
-			ResultSet rs = FunnyDB.getObjectResultSetByName("Account", name);
-			// create object to return
-			while (rs.next()) {
-				account = new Account(rs.getInt("account_id"), rs.getString("account_name"), rs.getString("account_type"), Currency.getCurrencyFromDatabaseById(rs.getInt("currency_id")), rs.getDouble("start_amount"), rs.getDouble("balance"));
-			}
-			rs.close();
-		} catch (SQLException ex) {
-			Logger.getLogger(Currency.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
-		}
+	public static Account getAccountFromDatabaseByName(String objectName) {
+		Map hm = FunnyDB.getObjectDataByName("Account", objectName);
+		// get values
+		int id = (Integer) hm.get("account_id");
+		String name = (String) hm.get("account_name");
+		String type = (String) hm.get("account_type");
+		Currency currency = Currency.getCurrencyFromDatabaseById((Integer) hm.get("currency_id"));
+		double startAmount = (Double) hm.get("start_amount");
+		double balance = (Double) hm.get("balance");
+		// create object
+		Account account = new Account(id, name, type, currency, startAmount, balance);
 		return account;
 	}
 

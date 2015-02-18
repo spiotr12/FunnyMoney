@@ -31,25 +31,32 @@ public class TestMain {
 			db.createTable(DefaultTables.PROJECT_TABLE);
 			db.createTable(DefaultTables.PAYEE_TABLE);
 			db.createTable(DefaultTables.OPERATION_TABLE);
+			
+			//TODO: Create some data to work with
 		}
-		
+
 //		Currency pln = new Currency("MET", "zł", Currency.AFTER_VALUE);
 //		System.out.println(pln.toString());
 //		pln.addToDatabase();
 //		System.out.println(pln.toString());
-		
 		Currency pln = Currency.getCurrencyFromDatabaseByName("met");
 		System.out.println(pln.toString());
 		
-		Account bank = Account.getAccountFromDatabaseByName("My bank");
-		System.out.println(bank.toString());
-		bank.updateToDatabase(new Account("You bank", Account.CASH, pln, 0.30));
-		System.out.println(bank.toString());
+//		Account add = new Account("Alior", Account.BANK, pln, 20.34);
+//		add.addToDatabase();
+		Currency gbp = new Currency("GBP", "zł", Currency.BEFORE_VALUE);
+		System.out.println(gbp.toString());
+		gbp.addToDatabase();
+		System.out.println(gbp.toString());
 		
-		String str = "asdadasd,asdasdas, df";		
-		System.out.println(StaticUtilities.removeLastComa(str));
-		System.out.println("---------------");
+		Currency asd = Currency.getCurrencyFromDatabaseById(1);
+		System.out.println(asd.toString());
 		
+
+		Account bank = Account.getAccountFromDatabaseById(3);
+		System.out.println(bank.toString());
+//		bank.updateToDatabase(new Account("You bank", Account.CASH, pln, 0.30));
+//		System.out.println(bank.toString());
 
 	}
 

@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Mon Feb 16 14:11:14 GMT 2015:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168): instance a816c00e-014b-92ba-8cca-00000341d908 
-on database directory C:\Users\Piotrek\Documents\NetBeansProjects\FunnyMoney\test_db with class loader sun.misc.Launcher$AppClassLoader@42a57993 
+Wed Feb 18 21:00:03 GMT 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168): instance a816c00e-014b-9e7d-8dca-000000a070e8 
+on database directory C:\Users\Piotrek\Documents\NetBeansProjects\FunnyMoney\test_db with class loader sun.misc.Launcher$AppClassLoader@a57993 
 Loaded from file:/C:/Users/Piotrek/Documents/NetBeansProjects/FunnyMoney/lib/JAVADB_DRIVER_LABEL/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_20-b26
+java.runtime.version=1.8.0_05-b13
 user.dir=C:\Users\Piotrek\Documents\NetBeansProjects\FunnyMoney
-os.name=Windows 8.1
-os.arch=amd64
-os.version=6.3
+os.name=Windows 7
+os.arch=x86
+os.version=6.1
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
