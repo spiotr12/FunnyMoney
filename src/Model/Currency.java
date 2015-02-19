@@ -5,6 +5,7 @@
  */
 package Model;
 
+import static Control.TestMain.FMLOGGER;
 import FunnyMoneyDatabase.FunnyDB;
 import FunnyMoneyDatabase.UtilitiesInterface;
 import static FunnyMoneyDatabase.FunnyDB.con;
@@ -36,11 +37,12 @@ public class Currency implements UtilitiesInterface<Currency> {
 	 * @param symbol
 	 * @param position
 	 */
-	public Currency(int id, String name, String symbol, int position) {
+	public Currency(String name, String symbol, int position, int id) {
 		this.id = id;
 		this.position = position;
 		this.name = name;
 		this.symbol = symbol;
+//		FMLOGGER.log(Level.INFO, "{0} full constructor used", Currency.class.getName());
 	}
 
 	/**
@@ -55,6 +57,7 @@ public class Currency implements UtilitiesInterface<Currency> {
 		this.position = position;
 		this.name = name;
 		this.symbol = symbol;
+//		FMLOGGER.log(Level.INFO, "{0} standard constructor used", Currency.class.getName());
 	}
 
 	public int getId() {
@@ -75,7 +78,7 @@ public class Currency implements UtilitiesInterface<Currency> {
 
 	@Override
 	public String toString() {
-		return "Currency \"" + name + "\" (id = " + id + ") has symbol \'" + symbol + "\' and position is " + position + ".";
+		return "Currency \"" + name + "\" (id = " + id + ") has symbol \'" + symbol + "\' and position is " + position;
 	}
 
 	//---------------- IMPLEMENTED METHODS -------------------------------------------------------------------------------------
@@ -94,44 +97,46 @@ public class Currency implements UtilitiesInterface<Currency> {
 			// close connections
 			rs.close();
 			stmt.close();
+			FMLOGGER.log(Level.INFO, "{0} was added to database", this.toString());
 		} catch (SQLException ex) {
 			Logger.getLogger(Currency.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
+
 		}
 	}
 
 	@Override
-	public void updateToDatabase(Currency newCurrency) {
+	public void updateToDatabase(Currency update) {
 		//TEST: Update
 		boolean change = false;
 		try {
 			Statement stmt = con.createStatement();
 			String sql = "UPDATE Currency \n" + "SET ";
+			// test if there is a value, test if new value is different then old one
 			// set name
-			if (!this.name.equals(newCurrency.getName())) {
-				sql += "currency_name = '" + newCurrency.getName() + "', ";
-				this.name = newCurrency.getName();
+			if (update.getName() != null && !this.name.equals(update.getName())) {
+				sql += "currency_name = '" + update.getName() + "', ";
+				this.name = update.getName();
 				change = true;
 			}
 			// set symbol
-			if (!this.symbol.equals(newCurrency.getSymbol())) {
-				sql += "symbol = '" + newCurrency.getSymbol()+ "', ";
-				this.symbol = newCurrency.getSymbol();
+			if (update.getSymbol() != null && !this.symbol.equals(update.getSymbol())) {
+				sql += "symbol = '" + update.getSymbol() + "', ";
+				this.symbol = update.getSymbol();
 				change = true;
 			}
 			// set position
-			if (this.position != newCurrency.getPosition()) {
-				sql += "position = " + newCurrency.getPosition() + ", ";
-				this.position = newCurrency.getPosition();
+			if (this.position != update.getPosition()) {
+				sql += "position = " + update.getPosition() + ", ";
+				this.position = update.getPosition();
 				change = true;
 			}
-			
+
 			// finish and execute querry
 			if (change) {
 				sql = removeLastComa(sql);	// removes coma 
 				sql += " \n" + "WHERE currency_id = " + this.id;	// finish sql query
 				stmt.executeUpdate(sql);	// update row
-				//System.out.println(sql);
+				FMLOGGER.log(Level.INFO, "{0} with id = {1} was updatet to: {2}", new Object[]{this.getClass().getSimpleName(), this.id, update.toString()});
 			} else {
 				System.out.println("Objects are the same, no new changes");
 			}
@@ -140,13 +145,25 @@ public class Currency implements UtilitiesInterface<Currency> {
 		} catch (SQLException ex) {
 			Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		
-		
 	}
 
 	@Override
-	public void removeFreomDatabase() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public void removeFromDatabase() {
+		if (this.id > 0) {
+			try {
+				Statement stmt = con.createStatement();
+				String sql = "DELETE FROM Currencu \n"
+						+ "WHERE currencu_id = " + this.id;
+				stmt.executeUpdate(sql);
+				stmt.close();
+				// sets id to 0, what is an equivalent to delete object from database, because it does not have an ID anymore. 
+				this.id = 0;
+			} catch (SQLException ex) {
+				Logger.getLogger(Currency.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		} else {
+			FMLOGGER.log(Level.WARNING, "ID for {0} \"{1}\" is not specified", new Object[]{this.getClass().getSimpleName(), this.getName()});
+		}
 	}
 
 	//---------------- STATIC METHODS -------------------------------------------------------------------------------------
@@ -165,7 +182,7 @@ public class Currency implements UtilitiesInterface<Currency> {
 		int position = (Integer) hm.get("position");
 
 		// create object
-		Currency currency = new Currency(id, name, type, position);
+		Currency currency = new Currency(name, type, position, id);
 		return currency;
 	}
 
@@ -184,7 +201,7 @@ public class Currency implements UtilitiesInterface<Currency> {
 		int position = (Integer) hm.get("position");
 
 		// create object
-		Currency currency = new Currency(id, name, type, position);
+		Currency currency = new Currency(name, type, position, id);
 		return currency;
 	}
 

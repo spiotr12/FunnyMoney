@@ -5,6 +5,7 @@
  */
 package Model;
 
+import static Control.TestMain.FMLOGGER;
 import FunnyMoneyDatabase.FunnyDB;
 import FunnyMoneyDatabase.UtilitiesInterface;
 import static FunnyMoneyDatabase.FunnyDB.con;
@@ -42,7 +43,7 @@ public class Account implements UtilitiesInterface<Account> {
 	 * @param startAmount
 	 * @param balance
 	 */
-	public Account(int id, String name, String type, Currency currency, double startAmount, double balance) {
+	public Account(String name, String type, Currency currency, double startAmount, double balance, int id) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
@@ -99,7 +100,7 @@ public class Account implements UtilitiesInterface<Account> {
 	@Override
 	public String toString() {
 		return "Account \"" + name + "\" (id = " + id + ") is in " + currency.getName() + ", type is " + type + ", start amount was: " + currency.getValueWithCurrency(startAmount)
-				+ ", while current balance = " + currency.getValueWithCurrency(balance) + ".";
+				+ ", while current balance = " + currency.getValueWithCurrency(balance);
 	}
 
 	//---------------- IMPLEMENTED METHODS -------------------------------------------------------------------------------------
@@ -118,6 +119,7 @@ public class Account implements UtilitiesInterface<Account> {
 			// close connections
 			stmt.close();
 			rs.close();
+			FMLOGGER.log(Level.INFO, "{0} was added to database", this.toString());
 		} catch (SQLException ex) {
 			Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
@@ -126,36 +128,37 @@ public class Account implements UtilitiesInterface<Account> {
 	}
 
 	@Override
-	public void updateToDatabase(Account newAccount) {
+	public void updateToDatabase(Account update) {
 		boolean change = false;
 		boolean changeName = false;
 		try {
 			Statement stmt = con.createStatement();
 			String sql = "UPDATE Account \n" + "SET ";
+			// probram tests if there is a value, tests if new value is different then old one
 			// set name
-			if (!this.name.equals(newAccount.getName())) {
-				sql += "account_name = '" + newAccount.getName() + "', ";
-				this.name = newAccount.getName();
+			if (update.getName() != null && !this.name.equals(update.getName())) {
+				sql += "account_name = '" + update.getName() + "', ";
+				this.name = update.getName();
 				change = true;
 				changeName = true;
 			}
 			// set type
-			if (!this.type.equals(newAccount.getType())) {
-				sql += "account_type = '" + newAccount.getType() + "', ";
-				this.type = newAccount.getType();
+			if (update.getType() != null && !this.type.equals(update.getType())) {
+				sql += "account_type = '" + update.getType() + "', ";
+				this.type = update.getType();
 				change = true;
 			}
 			// set currency
-			int currencyId = newAccount.getCurrency().getId();
-			if (this.currency.getId() != currencyId) {
+			int currencyId = update.getCurrency().getId();
+			if (currencyId != 0 && this.currency.getId() != currencyId) {
 				sql += "currency_id = " + currencyId + ", ";
 				this.currency = Currency.getCurrencyFromDatabaseById(currencyId);
 				change = true;
 			}
 			// set startAmount and set balance
-			if (this.startAmount != newAccount.getStartAmount()) {
-				sql += "start_amount = " + newAccount.getStartAmount() + ", ";
-				this.startAmount = newAccount.getStartAmount();
+			if (this.startAmount != update.getStartAmount()) {
+				sql += "start_amount = " + update.getStartAmount() + ", ";
+				this.startAmount = update.getStartAmount();
 				this.balance = this.countBalance();
 				change = true;
 			}
@@ -165,7 +168,7 @@ public class Account implements UtilitiesInterface<Account> {
 				sql = removeLastComa(sql);	// removes coma 
 				sql += " \n" + "WHERE account_id = " + this.id;	// finish sql query
 				stmt.executeUpdate(sql);	// update row
-				//System.out.println(sql);
+				FMLOGGER.log(Level.INFO, "{0} with id = {1} was updatet to: {2}", new Object[]{this.getClass().getSimpleName(), this.id, update.toString()});
 			} else {
 				System.out.println("Objects are the same, no new changes");
 			}
@@ -181,8 +184,22 @@ public class Account implements UtilitiesInterface<Account> {
 	}
 
 	@Override
-	public void removeFreomDatabase() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public void removeFromDatabase() {
+		if (this.id > 0) {
+			try {
+				Statement stmt = con.createStatement();
+				String sql = "DELETE FROM Account \n"
+						+ "WHERE account_id = " + this.id;
+				stmt.executeUpdate(sql);
+				stmt.close();
+				// sets id to 0, what is an equivalent to delete object from database, because it does not have an ID anymore. 
+				this.id = 0;
+			} catch (SQLException ex) {
+				Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		} else {
+			FMLOGGER.log(Level.WARNING, "ID for {0} \"{1}\" is not specified", new Object[]{this.getClass().getSimpleName(), this.getName()});
+		} 
 	}
 
 	//---------------- STATIC METHODS -------------------------------------------------------------------------------------
@@ -202,7 +219,7 @@ public class Account implements UtilitiesInterface<Account> {
 		double startAmount = (Double) hm.get("start_amount");
 		double balance = (Double) hm.get("balance");
 		// create object
-		Account account = new Account(id, name, type, currency, startAmount, balance);
+		Account account = new Account(name, type, currency, startAmount, balance, id);
 		return account;
 	}
 
@@ -222,7 +239,7 @@ public class Account implements UtilitiesInterface<Account> {
 		double startAmount = (Double) hm.get("start_amount");
 		double balance = (Double) hm.get("balance");
 		// create object
-		Account account = new Account(id, name, type, currency, startAmount, balance);
+		Account account = new Account(name, type, currency, startAmount, balance, id);
 		return account;
 	}
 
@@ -232,8 +249,7 @@ public class Account implements UtilitiesInterface<Account> {
 	 *
 	 * @return This account current balance.
 	 */
-	public double countBalance() {
-		//TEST: Test countBalance()
+	public double countBalance() {	//TEST: Test countBalance()
 		double totalBalance = this.startAmount;
 		try {
 			Statement stmt = con.createStatement();
@@ -250,7 +266,7 @@ public class Account implements UtilitiesInterface<Account> {
 			stmt.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
+
 		} finally {
 			// updates balance to database
 			try {

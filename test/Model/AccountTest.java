@@ -154,13 +154,13 @@ public class AccountTest {
 	}
 
 	/**
-	 * Test of removeFreomDatabase method, of class Account.
+	 * Test of removeFromDatabase method, of class Account.
 	 */
 	@Test
 	public void testRemoveFreomDatabase() {
 		System.out.println("removeFreomDatabase");
 		Account instance = null;
-		instance.removeFreomDatabase();
+		instance.removeFromDatabase();
 		// TODO review the generated test code and remove the default call to fail.
 		fail("The test case is a prototype.");
 	}

@@ -54,10 +54,10 @@ public class FunnyDB {
 			this.con = DriverManager.getConnection(url, user, password);
 		} catch (ClassNotFoundException ex) {
 			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
+
 		} catch (SQLException ex) {
 			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
+
 		}
 	}
 
@@ -75,17 +75,16 @@ public class FunnyDB {
 			stmt.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
 		}
 	}
 
 	/**
-	 * Checks if the table already exists, or table does not exists..
+	 * Returns true if table exists; false if it doesn't.
 	 *
 	 * @param tableName Table name to check for existence.
-	 * @return
+	 * @return true if table exists; false if it doesn't.
 	 */
-	private static boolean doesTableExists(String tableName) {
+	public static boolean doesTableExists(String tableName) {
 		ArrayList<String> tables = new ArrayList<>();
 		boolean exists = false;
 		try {
@@ -98,7 +97,6 @@ public class FunnyDB {
 			rs.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
 		} finally {
 			// check
 			for (String str : tables) {
@@ -111,44 +109,42 @@ public class FunnyDB {
 	}
 
 	/**
-	 * Checks if the value already exists, or table does not exists. in given table. If yes, returns 1; if no, returns 0. If table does not exist, returns -1. This method is
-	 * created to ensures that table auto increment does not
+	 * Checks if the value already exists, or table does not exists. in given table. If yes, returns true; if no, returns false.
 	 *
 	 * @param tableName Name of the table to search through.
 	 * @param objectName Name of the object to find.
-	 * @return If value found, returns 1; if no, returns 0. If table does not exist, returns -1.
+	 * @return If the value exists returns <code>true</code>, else return <code>false</code>
 	 */
-	public static int doesValueExist(String tableName, String objectName) {
-		if (doesTableExists(tableName)) {
-			boolean exists = false;
-			String columnName = tableName.toLowerCase() + "_name";
-			try {
-				Statement stmt = con.createStatement();
-				String sql = "SELECT " + columnName + "\n"
-						+ "FROM " + tableName + "\n"
-						+ "WHERE " + columnName + " = '" + objectName + "'";
-				ResultSet rs = stmt.executeQuery(sql);
-				while (rs.next()) {
-					if (rs.getString(columnName).equals(objectName)) {
-						exists = true;
-					}
-				}
-				stmt.close();
-				rs.close();
-			} catch (SQLException ex) {
-				Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
-				System.out.println(ex.getMessage());
-			} finally {
-				if (exists) {
-					return 1;
-				} else {
-					return 0;
+	public static boolean doesValueExist(String tableName, String objectName) {
+//		if (doesTableExists(tableName)) {
+		boolean exists = false;
+		String columnName = tableName.toLowerCase() + "_name";
+		try {
+			Statement stmt = con.createStatement();
+			String sql = "SELECT " + columnName + "\n"
+					+ "FROM " + tableName + "\n"
+					+ "WHERE " + columnName + " = '" + objectName + "'";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				if (rs.getString(columnName).equals(objectName)) {
+					exists = true;
 				}
 			}
-		} else {
-			System.out.println("Table " + tableName + " does not exists");
-			return -1;
+			stmt.close();
+			rs.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			if (exists) {
+				return true;
+			} else {
+				return false;
+			}
 		}
+//		} else {
+//			System.out.println("Table " + tableName + " does not exists");
+//			return -1;
+//		}
 	}
 
 //	/**
@@ -170,7 +166,7 @@ public class FunnyDB {
 //			//TODO: Closing rs and stmt? .close().
 //		} catch (SQLException ex) {
 //			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
-//			System.out.println(ex.getMessage());
+//			
 //		}
 //		return rs;
 //	}
@@ -193,7 +189,7 @@ public class FunnyDB {
 //			//TODO: Closing rs and stmt? .close().
 //		} catch (SQLException ex) {
 //			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
-//			System.out.println(ex.getMessage());
+//			
 //		}
 //		return rs;
 //	}
@@ -228,7 +224,7 @@ public class FunnyDB {
 			rs.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
+
 		}
 		return map;
 	}
@@ -264,7 +260,7 @@ public class FunnyDB {
 			rs.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
-			System.out.println(ex.getMessage());
+
 		}
 		return map;
 	}
