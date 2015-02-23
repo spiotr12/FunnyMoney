@@ -6,8 +6,6 @@
 package Control;
 
 import FunnyMoneyDatabase.FunnyDB;
-import FunnyMoneyDatabase.DefaultTables;
-import Model.Account;
 import Model.Currency;
 import java.util.logging.Logger;
 
@@ -32,8 +30,6 @@ public class TestMain {
 		
 		
 		//QUESTIONS AND TASKS
-		//ASK: When to use logger? In the method or when it is executed?
-		//ASK: How to properly use logger? Advices
 		//TODO: Improve logger
 		
 		

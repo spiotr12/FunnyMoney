@@ -249,7 +249,7 @@ public class Account implements UtilitiesInterface<Account> {
 	 *
 	 * @return This account current balance.
 	 */
-	public double countBalance() {	//TEST: Test countBalance()
+	public double countBalance() {	//TEST ME: Test countBalance()
 		double totalBalance = this.startAmount;
 		try {
 			Statement stmt = con.createStatement();

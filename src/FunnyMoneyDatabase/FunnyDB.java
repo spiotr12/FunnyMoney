@@ -163,7 +163,6 @@ public class FunnyDB {
 //					+ "FROM " + tableName + " \n"
 //					+ "WHERE " + tableName.toLowerCase() + "_id = " + id;
 //			rs = stmt.executeQuery(sql);
-//			//TODO: Closing rs and stmt? .close().
 //		} catch (SQLException ex) {
 //			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
 //			
@@ -186,7 +185,6 @@ public class FunnyDB {
 //					+ "FROM " + tableName + " \n"
 //					+ "WHERE " + tableName.toLowerCase() + "_name = '" + name + "'";
 //			rs = stmt.executeQuery(sql);
-//			//TODO: Closing rs and stmt? .close().
 //		} catch (SQLException ex) {
 //			Logger.getLogger(FunnyDB.class.getName()).log(Level.SEVERE, null, ex);
 //			

@@ -106,12 +106,12 @@ public class Currency implements UtilitiesInterface<Currency> {
 
 	@Override
 	public void updateToDatabase(Currency update) {
-		//TEST: Update
+		//TEST ME: Update
 		boolean change = false;
 		try {
 			Statement stmt = con.createStatement();
 			String sql = "UPDATE Currency \n" + "SET ";
-			// test if there is a value, test if new value is different then old one
+			// do test if there is a value, test if new value is different then old one
 			// set name
 			if (update.getName() != null && !this.name.equals(update.getName())) {
 				sql += "currency_name = '" + update.getName() + "', ";
