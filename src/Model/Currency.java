@@ -221,6 +221,4 @@ public class Currency implements UtilitiesInterface<Currency> {
 		}
 		return str;
 	}
-
-	//TODO: Add comparator/comparable interface
 }

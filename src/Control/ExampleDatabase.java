@@ -12,6 +12,7 @@ import static FunnyMoneyDatabase.FunnyDB.doesValueExist;
 import static FunnyMoneyDatabase.FunnyDB.doesTableExists;
 import Model.Account;
 import Model.Currency;
+import Model.Payee;
 import java.util.logging.Level;
 
 /**
@@ -54,7 +55,6 @@ public class ExampleDatabase {
 		for (Currency c : currencys) {
 			if (!doesValueExist(Currency.class.getSimpleName(), c.getName())) {
 				c.addToDatabase();
-//				FMLOGGER.log(Level.INFO, "{0} added to database", c.toString());	//TODO: move to actual class constructor
 			} else {
 				FMLOGGER.log(Level.WARNING, "{0} \"{1}\" already exists/name already used", new Object[]{c.getClass().getSimpleName(), c.getName()});	//TODO: move to actual class constructor; update ID/object
 			}
@@ -69,7 +69,6 @@ public class ExampleDatabase {
 		for (Account a : accounts){
 			if (!doesValueExist(Account.class.getSimpleName(), a.getName())) {
 				a.addToDatabase();
-//				FMLOGGER.log(Level.INFO, "{0} added to database", a.toString());	//TODO: move to actual class constructor
 			} else {
 				FMLOGGER.log(Level.WARNING, "{0} \"{1}\" already exists/name already used", new Object[]{a.getClass().getSimpleName(), a.getName()});	//TODO: move to actual class constructor; update ID/object
 			}
@@ -82,6 +81,18 @@ public class ExampleDatabase {
 		// - payee
 		
 		// - project
+		Payee[] payees = new Payee[4];
+		payees[0] = new Payee("Asda", "Grocery shop");
+		payees[1] = new Payee("Lidl", null);
+		payees[2] = new Payee("PC World", "Computer shop");
+		payees[3] = new Payee("Oriental Takeaway", "Takeaway");
+		for (Payee p : payees){
+			if (!doesValueExist(Payee.class.getSimpleName(), p.getName())) {
+				p.addToDatabase();
+			} else {
+				FMLOGGER.log(Level.WARNING, "{0} \"{1}\" already exists/name already used", new Object[]{p.getClass().getSimpleName(), p.getName()});	//TODO: move to actual class constructor; update ID/object
+			}
+		}
 		
 		// - operation
 		

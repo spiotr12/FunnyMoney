@@ -1,0 +1,56 @@
+mar 02, 2015 10:35:26 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "PLN" already exists/name already used
+mar 02, 2015 10:35:26 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "GBP" already exists/name already used
+mar 02, 2015 10:35:26 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "USD" already exists/name already used
+mar 02, 2015 10:35:26 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "EUR" already exists/name already used
+mar 02, 2015 10:35:27 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "TSB bank" already exists/name already used
+mar 02, 2015 10:35:27 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Wallet" already exists/name already used
+mar 02, 2015 10:35:27 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Alior" already exists/name already used
+mar 02, 2015 10:35:27 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "WBK" already exists/name already used
+mar 02, 2015 10:53:03 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "PLN" already exists/name already used
+mar 02, 2015 10:53:03 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "GBP" already exists/name already used
+mar 02, 2015 10:53:03 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "USD" already exists/name already used
+mar 02, 2015 10:53:03 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "EUR" already exists/name already used
+mar 02, 2015 10:53:03 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "TSB bank" already exists/name already used
+mar 02, 2015 10:53:03 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Wallet" already exists/name already used
+mar 02, 2015 10:53:03 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Alior" already exists/name already used
+mar 02, 2015 10:53:04 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "WBK" already exists/name already used
+mar 02, 2015 10:54:58 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "PLN" already exists/name already used
+mar 02, 2015 10:54:58 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "GBP" already exists/name already used
+mar 02, 2015 10:54:58 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "USD" already exists/name already used
+mar 02, 2015 10:54:58 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "EUR" already exists/name already used
+mar 02, 2015 10:54:59 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "TSB bank" already exists/name already used
+mar 02, 2015 10:54:59 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Wallet" already exists/name already used
+mar 02, 2015 10:54:59 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Alior" already exists/name already used
+mar 02, 2015 10:54:59 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "WBK" already exists/name already used
+mar 02, 2015 10:54:59 AM Model.Payee addToDatabase
+INFO: Payee "Asda" (id = 1): Grocery shop was added to database
+mar 02, 2015 10:54:59 AM Model.Payee addToDatabase
+INFO: Payee "Lidl" (id = 2): null was added to database
+mar 02, 2015 10:54:59 AM Model.Payee addToDatabase
+INFO: Payee "PC World" (id = 3): Computer shop was added to database
+mar 02, 2015 10:54:59 AM Model.Payee addToDatabase
+INFO: Payee "Oriental Takeaway" (id = 4): Takeaway was added to database
