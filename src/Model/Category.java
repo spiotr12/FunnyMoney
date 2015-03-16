@@ -21,55 +21,50 @@ import java.util.logging.Logger;
  *
  * @author spiotr12 <KnowIdea Team>
  */
-public class Payee implements UtilitiesInterface<Payee> {
+public class Category implements UtilitiesInterface<Category> {
 
-	private int id;
-	private String name, description;
-	private boolean editable;
+	private int id, type;
+	private String name;
 
 	/**
 	 * Full field constructor. Use for DB queries.
 	 *
 	 * @param name
-	 * @param description
-	 * @param editable Set to fale only by application, user's payees are set to true.
+	 * @param type
 	 * @param id
 	 */
-	public Payee(String name, String description, boolean editable, int id) {
+	public Category(String name, int type, int id) {
 		this.id = id;
+		this.type = type;
 		this.name = name;
-		this.description = description;
-		this.editable = editable;
 	}
 
 	/**
 	 * Constructor without ID. Use addToDatabase() method to add to database and get register ID.
 	 *
 	 * @param name
-	 * @param description
-	 * @param editable Set to fale only by application, user's payees are set to true.
+	 * @param type
 	 */
-	public Payee(String name, String description, boolean editable) {
+	public Category(String name, int type) {
+		this.type = type;
 		this.name = name;
-		this.description = description;
-		this.editable = editable;
 	}
 
 	public int getId() {
 		return id;
 	}
 
+	public int getType() {
+		return type;
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
 	@Override
 	public String toString() {
-		return "Payee \"" + name + "\" (id = " + id + "): " + description;
+		return "Category \"" + name + "\" (id = " + id + ") has type: " + type;
 	}
 
 	//---------------- IMPLEMENTED METHODS -------------------------------------------------------------------------------------
@@ -77,8 +72,8 @@ public class Payee implements UtilitiesInterface<Payee> {
 	public void addToDatabase() {
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "INSERT INTO Payee (payee_name, description, editable)\n"
-					+ "VALUES ('" + this.name + "', '" + this.description + "', " + this.editable + ")";
+			String sql = "INSERT INTO Category (category_name, category_type)\n"
+					+ "VALUES ('" + this.name + "', " + this.type + ")";
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 			// get index of this operation
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -90,35 +85,35 @@ public class Payee implements UtilitiesInterface<Payee> {
 			rs.close();
 			FMLOGGER.log(Level.INFO, "{0} was added to database", this.toString());
 		} catch (SQLException ex) {
-			Logger.getLogger(Payee.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(Category.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
 	@Override
-	public void updateToDatabase(Payee updatedObject) {
-		//TEST ME: Update 
+	public void updateToDatabase(Category updatedObject) {
+//TEST ME: Update category
 		boolean change = false;
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "UPDATE Payee \n" + "SET ";
+			String sql = "UPDATE Category \n" + "SET ";
 			// do test if there is a value, test if new value is different then old one
 			// set name
 			if (updatedObject.getName() != null && !this.name.equals(updatedObject.getName())) {
-				sql += "payee_name = '" + updatedObject.getName() + "', ";
+				sql += "category_name = '" + updatedObject.getName() + "', ";
 				this.name = updatedObject.getName();
 				change = true;
 			}
-			// set symbol
-			if (updatedObject.getDescription() != null && !this.description.equals(updatedObject.getDescription())) {
-				sql += "description = '" + updatedObject.getDescription() + "', ";
-				this.description = updatedObject.getDescription();
+			// set type
+			if (this.type != updatedObject.getType()) {
+				sql += "description = '" + updatedObject.getType() + "', ";
+				this.type = updatedObject.getType();
 				change = true;
 			}
 
 			// finish and execute querry
 			if (change) {
 				sql = removeLastComa(sql);	// removes coma 
-				sql += " \n" + "WHERE payee_id = " + this.id;	// finish sql query
+				sql += " \n" + "WHERE category_id = " + this.id;	// finish sql query
 				stmt.executeUpdate(sql);	// update row
 				FMLOGGER.log(Level.INFO, "{0} with id = {1} was updatet to: {2}", new Object[]{this.getClass().getSimpleName(), this.id, updatedObject.toString()});
 			} else {
@@ -127,25 +122,22 @@ public class Payee implements UtilitiesInterface<Payee> {
 			// close connections
 			stmt.close();
 		} catch (SQLException ex) {
-			Logger.getLogger(Payee.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
+			Logger.getLogger(Category.class.getName()).log(Level.SEVERE, null, ex);
+		}	}
 
 	@Override
 	public void removeFromDatabase() {
 		if (this.id > 0) {
 			try {
 				Statement stmt = con.createStatement();
-				String sql = "DELETE FROM Payee \n"
-						+ "WHERE payee_id = " + this.id;
+				String sql = "DELETE FROM Category \n"
+						+ "WHERE category_id = " + this.id;
 				stmt.executeUpdate(sql);
 				stmt.close();
 				// sets id to 0, what is an equivalent to delete object from database, because it does not have an ID anymore. 
 				this.id = 0;
-
 			} catch (SQLException ex) {
-				Logger.getLogger(Payee.class
-						.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(Category.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		} else {
 			FMLOGGER.log(Level.WARNING, "ID for {0} \"{1}\" is not specified", new Object[]{this.getClass().getSimpleName(), this.getName()});
@@ -159,16 +151,15 @@ public class Payee implements UtilitiesInterface<Payee> {
 	 * @param objectId Object ID.
 	 * @return Object from database.
 	 */
-	public static Payee getPayeeFromDatabaseById(int objectId) {
-		Map hm = FunnyDB.getObjectDataById("Payee", objectId);
+	public static Category getCategoryFromDatabaseById(int objectId) {
+		Map hm = FunnyDB.getObjectDataById("Category", objectId);
 		// get values
-		int id = (Integer) hm.get("payee_id");
-		String name = (String) hm.get("payee_name");
-		String description = (String) hm.get("description");
-		boolean editable = (boolean) hm.get("editable");
+		int id = (Integer) hm.get("category_id");
+		String name = (String) hm.get("category_name");
+		int type = (Integer) hm.get("category_type");
 		// create object
-		Payee payee = new Payee(name, description, editable, id);
-		return payee;
+		Category category = new Category(name, type, id);
+		return category;
 	}
 
 	/**
@@ -177,17 +168,16 @@ public class Payee implements UtilitiesInterface<Payee> {
 	 * @param objectName
 	 * @return Object from database.
 	 */
-	public static Payee getPayeeFromDatabaseByName(String objectName) {
-		Map hm = FunnyDB.getObjectDataByName("Payee", objectName);
+	public static Category getCategoryFromDatabaseByName(String objectName) {
+		Map hm = FunnyDB.getObjectDataByName("Category", objectName);
 		// get values
-		int id = (Integer) hm.get("payee_id");
-		String name = (String) hm.get("payee_name");
-		String description = (String) hm.get("description");
-		boolean editable = (boolean) hm.get("editable");
+		int id = (Integer) hm.get("category_id");
+		String name = (String) hm.get("category_name");
+		int type = (Integer) hm.get("category_type");
 		// create object
-		Payee payee = new Payee(name, description, editable, id);
-		return payee;
+		Category category = new Category(name, type, id);
+		return category;
 	}
-
 	//---------------- CUSTOM METHODS -------------------------------------------------------------------------------------
+
 }

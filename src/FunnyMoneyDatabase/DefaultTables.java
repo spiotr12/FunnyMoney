@@ -64,6 +64,7 @@ public class DefaultTables {
 			+ "payee_id		INT			NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), \n"
 			+ "payee_name	VARCHAR(50) NOT NULL, \n"
 			+ "description	VARCHAR(99), \n"
+			+ "editable		BOOLEAN		NOT NULL, \n"
 			+ "CONSTRAINT pk_Payee PRIMARY KEY (payee_id), \n"
 			+ "CONSTRAINT uc_payee_name UNIQUE (payee_name)"
 			+ ")";

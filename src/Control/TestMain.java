@@ -6,7 +6,9 @@
 package Control;
 
 import FunnyMoneyDatabase.FunnyDB;
+import Model.Account;
 import Model.Currency;
+import Model.Payee;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -48,6 +50,17 @@ public class TestMain {
 
 		Currency gbp = Currency.getCurrencyFromDatabaseByName("gbp");
 		System.out.println(gbp.toString());
+		
+		Account alior = Account.getAccountFromDatabaseByName("Alior");
+		System.out.println(alior.toString());
+		Payee aliorP = Payee.getPayeeFromDatabaseByName("Alior");
+		System.out.println(aliorP.toString());
+		
+		alior.updateToDatabase(new Account("AliorKantor", null, alior.getCurrency(), alior.getStartAmount()));
+		System.out.println(alior.toString());
+		aliorP = Payee.getPayeeFromDatabaseByName("AliorKantor");
+		System.out.println(aliorP.toString());
+		
 
 //		Currency pln1 = new Currency("MET", "zł", Currency.AFTER_VALUE);
 //		System.out.println(pln1.toString());

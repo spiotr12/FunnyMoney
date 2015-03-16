@@ -120,45 +120,47 @@ public class Account implements UtilitiesInterface<Account> {
 			stmt.close();
 			rs.close();
 			FMLOGGER.log(Level.INFO, "{0} was added to database", this.toString());
+			// Add payee with accout name
+			Payee accountPayee = new Payee(this.name, "Payee refer to your" + this.name + " account", false);
+			accountPayee.addToDatabase();
 		} catch (SQLException ex) {
 			Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
-		} finally {
-			//TODO: Add payee with accout name
 		}
 	}
 
 	@Override
-	public void updateToDatabase(Account update) {
+	public void updateToDatabase(Account updatedObject) {
 		boolean change = false;
 		boolean changeName = false;
+		String oldName = this.name;
 		try {
 			Statement stmt = con.createStatement();
 			String sql = "UPDATE Account \n" + "SET ";
 			// probram tests if there is a value, tests if new value is different then old one
 			// set name
-			if (update.getName() != null && !this.name.equals(update.getName())) {
-				sql += "account_name = '" + update.getName() + "', ";
-				this.name = update.getName();
+			if (updatedObject.getName() != null && !this.name.equals(updatedObject.getName())) {
+				sql += "account_name = '" + updatedObject.getName() + "', ";
+				this.name = updatedObject.getName();
 				change = true;
 				changeName = true;
 			}
 			// set type
-			if (update.getType() != null && !this.type.equals(update.getType())) {
-				sql += "account_type = '" + update.getType() + "', ";
-				this.type = update.getType();
+			if (updatedObject.getType() != null && !this.type.equals(updatedObject.getType())) {
+				sql += "account_type = '" + updatedObject.getType() + "', ";
+				this.type = updatedObject.getType();
 				change = true;
 			}
 			// set currency
-			int currencyId = update.getCurrency().getId();
+			int currencyId = updatedObject.getCurrency().getId();
 			if (currencyId != 0 && this.currency.getId() != currencyId) {
 				sql += "currency_id = " + currencyId + ", ";
 				this.currency = Currency.getCurrencyFromDatabaseById(currencyId);
 				change = true;
 			}
 			// set startAmount and set balance
-			if (this.startAmount != update.getStartAmount()) {
-				sql += "start_amount = " + update.getStartAmount() + ", ";
-				this.startAmount = update.getStartAmount();
+			if (this.startAmount != updatedObject.getStartAmount()) {
+				sql += "start_amount = " + updatedObject.getStartAmount() + ", ";
+				this.startAmount = updatedObject.getStartAmount();
 				this.balance = this.countBalance();
 				change = true;
 			}
@@ -168,18 +170,21 @@ public class Account implements UtilitiesInterface<Account> {
 				sql = removeLastComa(sql);	// removes coma 
 				sql += " \n" + "WHERE account_id = " + this.id;	// finish sql query
 				stmt.executeUpdate(sql);	// update row
-				FMLOGGER.log(Level.INFO, "{0} with id = {1} was updatet to: {2}", new Object[]{this.getClass().getSimpleName(), this.id, update.toString()});
+				FMLOGGER.log(Level.INFO, "{0} with id = {1} was updatet to: {2}", new Object[]{this.getClass().getSimpleName(), this.id, updatedObject.toString()});
 			} else {
 				System.out.println("Objects are the same, no new changes");
 			}
 			// close connections
 			stmt.close();
+			// Updates payee with account name!!!
+			if(updatedObject.getName() != null && !oldName.equals(updatedObject.getName())){
+				Payee accountPayee = Payee.getPayeeFromDatabaseByName(oldName);
+				Payee newAccountPayee = new Payee(updatedObject.getName(), null, false);
+				accountPayee.updateToDatabase(newAccountPayee);
+			}
+			
 		} catch (SQLException ex) {
 			Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
-		} finally {
-			if (changeName) {
-				//TODO: Updates payee with account name
-			}
 		}
 	}
 
@@ -194,6 +199,9 @@ public class Account implements UtilitiesInterface<Account> {
 				stmt.close();
 				// sets id to 0, what is an equivalent to delete object from database, because it does not have an ID anymore. 
 				this.id = 0;
+				// Remove payee with account name
+				Payee accountPayee = Payee.getPayeeFromDatabaseByName(this.name);
+				accountPayee.removeFromDatabase();
 			} catch (SQLException ex) {
 				Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
 			}

@@ -54,3 +54,107 @@ mar 02, 2015 10:54:59 AM Model.Payee addToDatabase
 INFO: Payee "PC World" (id = 3): Computer shop was added to database
 mar 02, 2015 10:54:59 AM Model.Payee addToDatabase
 INFO: Payee "Oriental Takeaway" (id = 4): Takeaway was added to database
+mar 16, 2015 10:29:49 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "PLN" already exists/name already used
+mar 16, 2015 10:29:49 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "GBP" already exists/name already used
+mar 16, 2015 10:29:49 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "USD" already exists/name already used
+mar 16, 2015 10:29:49 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "EUR" already exists/name already used
+mar 16, 2015 10:29:50 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "TSB bank" already exists/name already used
+mar 16, 2015 10:29:50 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Wallet" already exists/name already used
+mar 16, 2015 10:29:50 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Alior" already exists/name already used
+mar 16, 2015 10:29:50 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "WBK" already exists/name already used
+mar 16, 2015 10:29:50 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Payee "Asda" already exists/name already used
+mar 16, 2015 10:29:50 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Payee "Lidl" already exists/name already used
+mar 16, 2015 10:29:50 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Payee "PC World" already exists/name already used
+mar 16, 2015 10:29:50 AM Control.ExampleDatabase createExampleDatabase
+WARNING: Payee "Oriental Takeaway" already exists/name already used
+mar 16, 2015 10:45:42 AM Model.Currency addToDatabase
+INFO: Currency "PLN" (id = 1) has symbol 'zł' and position is 1 was added to database
+mar 16, 2015 10:45:42 AM Model.Currency addToDatabase
+INFO: Currency "GBP" (id = 2) has symbol '£' and position is -1 was added to database
+mar 16, 2015 10:45:42 AM Model.Currency addToDatabase
+INFO: Currency "USD" (id = 3) has symbol '$' and position is -1 was added to database
+mar 16, 2015 10:45:42 AM Model.Currency addToDatabase
+INFO: Currency "EUR" (id = 4) has symbol '€' and position is -1 was added to database
+mar 16, 2015 10:45:43 AM Model.Account addToDatabase
+INFO: Account "TSB bank" (id = 1) is in GBP, type is BANK, start amount was: £740.3, while current balance = £740.3 was added to database
+mar 16, 2015 10:45:43 AM Model.Account addToDatabase
+INFO: Account "Wallet" (id = 2) is in EUR, type is CASH, start amount was: €14.71, while current balance = €14.71 was added to database
+mar 16, 2015 10:45:43 AM Model.Account addToDatabase
+INFO: Account "Alior" (id = 3) is in PLN, type is CARD, start amount was: 1303.89zł, while current balance = 1303.89zł was added to database
+mar 16, 2015 10:45:43 AM Model.Account addToDatabase
+INFO: Account "WBK" (id = 4) is in PLN, type is BANK, start amount was: 0.01zł, while current balance = 0.01zł was added to database
+mar 16, 2015 10:45:43 AM Model.Payee addToDatabase
+INFO: Payee "Asda" (id = 1): Grocery shop was added to database
+mar 16, 2015 10:45:43 AM Model.Payee addToDatabase
+INFO: Payee "Lidl" (id = 2): null was added to database
+mar 16, 2015 10:45:43 AM Model.Payee addToDatabase
+INFO: Payee "PC World" (id = 3): Computer shop was added to database
+mar 16, 2015 10:45:43 AM Model.Payee addToDatabase
+INFO: Payee "Oriental Takeaway" (id = 4): Takeaway was added to database
+mar 16, 2015 10:50:25 AM Model.Currency addToDatabase
+INFO: Currency "PLN" (id = 1) has symbol 'zł' and position is 1 was added to database
+mar 16, 2015 10:50:25 AM Model.Currency addToDatabase
+INFO: Currency "GBP" (id = 2) has symbol '£' and position is -1 was added to database
+mar 16, 2015 10:50:25 AM Model.Currency addToDatabase
+INFO: Currency "USD" (id = 3) has symbol '$' and position is -1 was added to database
+mar 16, 2015 10:50:25 AM Model.Currency addToDatabase
+INFO: Currency "EUR" (id = 4) has symbol '€' and position is -1 was added to database
+mar 16, 2015 10:50:25 AM Model.Account addToDatabase
+INFO: Account "TSB bank" (id = 1) is in GBP, type is BANK, start amount was: £740.3, while current balance = £740.3 was added to database
+mar 16, 2015 10:50:25 AM Model.Payee addToDatabase
+INFO: Payee "TSB bank" (id = 1): This payee refer to account. Do not change the name was added to database
+mar 16, 2015 10:50:25 AM Model.Account addToDatabase
+INFO: Account "Wallet" (id = 2) is in EUR, type is CASH, start amount was: €14.71, while current balance = €14.71 was added to database
+mar 16, 2015 10:50:25 AM Model.Payee addToDatabase
+INFO: Payee "Wallet" (id = 2): This payee refer to account. Do not change the name was added to database
+mar 16, 2015 10:50:25 AM Model.Account addToDatabase
+INFO: Account "Alior" (id = 3) is in PLN, type is CARD, start amount was: 1303.89zł, while current balance = 1303.89zł was added to database
+mar 16, 2015 10:50:26 AM Model.Payee addToDatabase
+INFO: Payee "Alior" (id = 3): This payee refer to account. Do not change the name was added to database
+mar 16, 2015 10:50:26 AM Model.Account addToDatabase
+INFO: Account "WBK" (id = 4) is in PLN, type is BANK, start amount was: 0.01zł, while current balance = 0.01zł was added to database
+mar 16, 2015 10:50:26 AM Model.Payee addToDatabase
+INFO: Payee "WBK" (id = 4): This payee refer to account. Do not change the name was added to database
+mar 16, 2015 10:50:26 AM Model.Payee addToDatabase
+INFO: Payee "Asda" (id = 5): Grocery shop was added to database
+mar 16, 2015 10:50:26 AM Model.Payee addToDatabase
+INFO: Payee "Lidl" (id = 6): null was added to database
+mar 16, 2015 10:50:26 AM Model.Payee addToDatabase
+INFO: Payee "PC World" (id = 7): Computer shop was added to database
+mar 16, 2015 10:50:26 AM Model.Payee addToDatabase
+INFO: Payee "Oriental Takeaway" (id = 8): Takeaway was added to database
+mar 16, 2015 12:29:21 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "PLN" already exists/name already used
+mar 16, 2015 12:29:21 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "GBP" already exists/name already used
+mar 16, 2015 12:29:21 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "USD" already exists/name already used
+mar 16, 2015 12:29:21 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Currency "EUR" already exists/name already used
+mar 16, 2015 12:29:21 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "TSB bank" already exists/name already used
+mar 16, 2015 12:29:21 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Wallet" already exists/name already used
+mar 16, 2015 12:29:21 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "Alior" already exists/name already used
+mar 16, 2015 12:29:21 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Account "WBK" already exists/name already used
+mar 16, 2015 12:29:22 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Payee "Asda" already exists/name already used
+mar 16, 2015 12:29:22 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Payee "Lidl" already exists/name already used
+mar 16, 2015 12:29:22 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Payee "PC World" already exists/name already used
+mar 16, 2015 12:29:22 PM Control.ExampleDatabase createExampleDatabase
+WARNING: Payee "Oriental Takeaway" already exists/name already used

@@ -105,7 +105,7 @@ public class Currency implements UtilitiesInterface<Currency> {
 	}
 
 	@Override
-	public void updateToDatabase(Currency update) {
+	public void updateToDatabase(Currency updatedObject) {
 		//TEST ME: Update
 		boolean change = false;
 		try {
@@ -113,21 +113,21 @@ public class Currency implements UtilitiesInterface<Currency> {
 			String sql = "UPDATE Currency \n" + "SET ";
 			// do test if there is a value, test if new value is different then old one
 			// set name
-			if (update.getName() != null && !this.name.equals(update.getName())) {
-				sql += "currency_name = '" + update.getName() + "', ";
-				this.name = update.getName();
+			if (updatedObject.getName() != null && !this.name.equals(updatedObject.getName())) {
+				sql += "currency_name = '" + updatedObject.getName() + "', ";
+				this.name = updatedObject.getName();
 				change = true;
 			}
 			// set symbol
-			if (update.getSymbol() != null && !this.symbol.equals(update.getSymbol())) {
-				sql += "symbol = '" + update.getSymbol() + "', ";
-				this.symbol = update.getSymbol();
+			if (updatedObject.getSymbol() != null && !this.symbol.equals(updatedObject.getSymbol())) {
+				sql += "symbol = '" + updatedObject.getSymbol() + "', ";
+				this.symbol = updatedObject.getSymbol();
 				change = true;
 			}
 			// set position
-			if (this.position != update.getPosition()) {
-				sql += "position = " + update.getPosition() + ", ";
-				this.position = update.getPosition();
+			if (this.position != updatedObject.getPosition()) {
+				sql += "position = " + updatedObject.getPosition() + ", ";
+				this.position = updatedObject.getPosition();
 				change = true;
 			}
 
@@ -136,7 +136,7 @@ public class Currency implements UtilitiesInterface<Currency> {
 				sql = removeLastComa(sql);	// removes coma 
 				sql += " \n" + "WHERE currency_id = " + this.id;	// finish sql query
 				stmt.executeUpdate(sql);	// update row
-				FMLOGGER.log(Level.INFO, "{0} with id = {1} was updatet to: {2}", new Object[]{this.getClass().getSimpleName(), this.id, update.toString()});
+				FMLOGGER.log(Level.INFO, "{0} with id = {1} was updatet to: {2}", new Object[]{this.getClass().getSimpleName(), this.id, updatedObject.toString()});
 			} else {
 				System.out.println("Objects are the same, no new changes");
 			}

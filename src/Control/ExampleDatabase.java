@@ -56,7 +56,7 @@ public class ExampleDatabase {
 			if (!doesValueExist(Currency.class.getSimpleName(), c.getName())) {
 				c.addToDatabase();
 			} else {
-				FMLOGGER.log(Level.WARNING, "{0} \"{1}\" already exists/name already used", new Object[]{c.getClass().getSimpleName(), c.getName()});	//TODO: move to actual class constructor; update ID/object
+				FMLOGGER.log(Level.WARNING, "{0} \"{1}\" already exists/name already used", new Object[]{c.getClass().getSimpleName(), c.getName()});	
 			}
 		}
 		
@@ -70,7 +70,7 @@ public class ExampleDatabase {
 			if (!doesValueExist(Account.class.getSimpleName(), a.getName())) {
 				a.addToDatabase();
 			} else {
-				FMLOGGER.log(Level.WARNING, "{0} \"{1}\" already exists/name already used", new Object[]{a.getClass().getSimpleName(), a.getName()});	//TODO: move to actual class constructor; update ID/object
+				FMLOGGER.log(Level.WARNING, "{0} \"{1}\" already exists/name already used", new Object[]{a.getClass().getSimpleName(), a.getName()});	
 			}
 		}
 		
@@ -82,15 +82,15 @@ public class ExampleDatabase {
 		
 		// - project
 		Payee[] payees = new Payee[4];
-		payees[0] = new Payee("Asda", "Grocery shop");
-		payees[1] = new Payee("Lidl", null);
-		payees[2] = new Payee("PC World", "Computer shop");
-		payees[3] = new Payee("Oriental Takeaway", "Takeaway");
+		payees[0] = new Payee("Asda", "Grocery shop", true);
+		payees[1] = new Payee("Lidl", null, true);
+		payees[2] = new Payee("PC World", "Computer shop", true);
+		payees[3] = new Payee("Oriental Takeaway", "Takeaway", true);
 		for (Payee p : payees){
 			if (!doesValueExist(Payee.class.getSimpleName(), p.getName())) {
 				p.addToDatabase();
 			} else {
-				FMLOGGER.log(Level.WARNING, "{0} \"{1}\" already exists/name already used", new Object[]{p.getClass().getSimpleName(), p.getName()});	//TODO: move to actual class constructor; update ID/object
+				FMLOGGER.log(Level.WARNING, "{0} \"{1}\" already exists/name already used", new Object[]{p.getClass().getSimpleName(), p.getName()});	
 			}
 		}
 		

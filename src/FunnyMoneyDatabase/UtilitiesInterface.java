@@ -23,7 +23,7 @@ public interface UtilitiesInterface<T> {
 	 *
 	 * @param update
 	 */
-	public void updateToDatabase(T update);
+	public void updateToDatabase(T updatedObject);
 
 	/**
 	 * Removes object from database; IMPORTANT: method search for the item by ID. Therefore object must be either added to database or imported from database before it is actually
