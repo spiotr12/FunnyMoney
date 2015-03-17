@@ -106,7 +106,7 @@ public class Currency implements UtilitiesInterface<Currency> {
 
 	@Override
 	public void updateToDatabase(Currency updatedObject) {
-		//TEST ME: Update
+		//TEST ME: Update Currency
 		boolean change = false;
 		try {
 			Statement stmt = con.createStatement();

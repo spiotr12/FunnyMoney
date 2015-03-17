@@ -53,7 +53,7 @@ public class Account implements UtilitiesInterface<Account> {
 	}
 
 	/**
-	 * Constructor without ID and balance. Use for new objects and updates. Use addToDatabase() method to add to database and get register ID. Balance is set using countBalance()
+	 * Constructor without ID and balance. Used for new objects and updates. Use addToDatabase() method to add to database and get register ID. Balance is set using countBalance()
 	 * method; For type use one of the static fields: BANK - for bank type, CASH - for cash type, CARD - for card type.
 	 *
 	 * @param name
@@ -121,7 +121,7 @@ public class Account implements UtilitiesInterface<Account> {
 			rs.close();
 			FMLOGGER.log(Level.INFO, "{0} was added to database", this.toString());
 			// Add payee with accout name
-			Payee accountPayee = new Payee(this.name, "Payee refer to your" + this.name + " account", false);
+			Payee accountPayee = new Payee(this.name, "Payee refer to one of your account", false);
 			accountPayee.addToDatabase();
 		} catch (SQLException ex) {
 			Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);

@@ -26,6 +26,10 @@ public class Category implements UtilitiesInterface<Category> {
 	private int id, type;
 	private String name;
 
+	public static final int EXPENSE = -1;
+	public static final int TRANSFER = 0;
+	public static final int INCOME = 1;
+	
 	/**
 	 * Full field constructor. Use for DB queries.
 	 *
